@@ -1,9 +1,9 @@
 function getEditor() {
     var elems = document.getElementsByTagName('textarea');
 
-    if (elems.length <= 0){
+    if (elems.length <= 0) {
         return null;
-    }        
+    }
     return elems[0];
 }
 
