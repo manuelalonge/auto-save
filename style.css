@@ -1,4 +1,14 @@
-#autosaveText, #clearButton{
+body {
+    background-color: aquamarine;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#autosaveText, #clearButton {
     padding: 2.5px;
     margin: 20px;
+}
+
+#clearButton {
+    border-radius: 10%;
+    background-color: white;
 }
