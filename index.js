@@ -1,32 +1,65 @@
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded');
+var AutoSave = (function () {
 
-    var key = 'key';
-    var autoSave = document.querySelector('#autoSaveText');
+	var timer = null;
 
-    autoSave.addEventListener('input', () => {
-        var text = autoSave.value;
-        window.localStorage.setItem(key, text);
-    });
+	function getEditor() {
 
-    function restore() {
-        var saved = window.localStorage.getItem(key);
+		var elems = document.getElementsByTagName("textarea")
+		if (elems.length <= 0)
+			return null;
 
-        if (saved && text) {
-            text = saved;
-        }
-    }
-
-    restore();
-
-    var clearButton = document.querySelector('#clearButton');
-
-    clearButton.addEventListener('click', () => {
-        window.localStorage.removeItem(key);
-        text = '';
-    });
+		return elems[0];
+	}
 
 
-});
+	function save() {
+
+		var editor = getEditor();
+		if (editor) {
+			localStorage.setItem("AUTOSAVE_" + document.location, editor.value)
+		}
+
+	}
 
 
+	function restore() {
+
+		var saved = localStorage.getItem("AUTOSAVE_" + document.location)
+		var editor = getEditor();
+		if (saved && editor) {
+
+			editor.value = saved;
+		}
+	}
+
+	return {
+
+		start: function () {
+
+			var editor = getEditor();
+
+
+			if (editor.value.length <= 0)
+				restore();
+
+			if (timer != null) {
+				clearInterval(timer);
+				timer = null;
+			}
+
+			timer = setInterval(save, 5000);
+
+
+		},
+
+		stop: function () {
+
+			if (timer) {
+				clearInterval(timer);
+				timer = null;
+			}
+
+		}
+	}
+
+}())
